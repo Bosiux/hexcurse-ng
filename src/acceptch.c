@@ -33,7 +33,8 @@ int SIZE_CH;                                            /* global winch flag  */
 int wacceptch(WINS *win, off_t len)
 {
     intmax_t tmp_max;
-    
+    MEVENT event;
+
     off_t count;
     int  col = 0, val, tmpval, 	    			/* counters, etc.     */   
          ch[81],					/* holds search string*/
@@ -90,6 +91,44 @@ int wacceptch(WINS *win, off_t len)
     while(!shouldExit)
     {
         key = wgetch(Winds);
+		if (key == KEY_MOUSE)
+        {
+            if (getmouse(&event) == OK)
+            {
+				int x = event.x;
+                if (event.bstate & BUTTON1_CLICKED)
+                {
+                    if (event.y == LINES){
+						
+						if (x >= 0 && x <= 7)	/* Help label */
+						{
+							goto HELP_LABEL;
+						} else if ( x <= 16 && x >= 9)	/* Save label */
+						{
+							goto SAVE_LABEL;
+						} else if ( x <= 25 && x >= 18)	/* Open label */
+						{
+							goto OPEN_LABEL;
+						} else if ( x <= (COLS/2) - 2 && x >= (COLS/2) - 9)	/* Goto label */
+						{
+							goto GOTO_LABEL;
+						} else if ( x <= (COLS/2) + 7 && x >= (COLS/2) ) /* Find label */
+						{
+							goto FIND_LABEL;
+						} else if ( x <= COLS - 19 && x >= COLS-26 ) /* Hex Addr label */
+						{
+							goto HEXADDR_LABEL;
+						} else if ( x <= COLS-10 && x >= COLS-17 ) /* Hex Edit label */
+						{
+							goto HEXEDIT_LABEL;
+						} else if ( x <= COLS-1 && x >= COLS-8 ) /* Quit label */
+						{
+							goto QUIT_LABEL;
+						}
+					}
+                }
+            }
+        }
 	lastRow = row;
 	lastCol = col;
 	getyx(Winds, row, col);				/* curent cursor loc  */
@@ -121,6 +160,7 @@ int wacceptch(WINS *win, off_t len)
 	case CTRL_AND('q'):
 	case CTRL_AND('x'):
 	case KEY_F(8):
+QUIT_LABEL:	
 		if (saved)
 		{
 			/* No pending changes */
@@ -461,6 +501,7 @@ int wacceptch(WINS *win, off_t len)
 
 	case CTRL_AND('o'):
 	case KEY_F(3):					/* if F3 or ^o...     */
+OPEN_LABEL:
 
 
 		if (openfile(win))			/* open file          */
@@ -477,6 +518,7 @@ int wacceptch(WINS *win, off_t len)
 
 	case CTRL_AND('s'):				/* if F2 or ^s...     */
 	case KEY_F(2):					/* save the file      */
+SAVE_LABEL:
 		if (savefile(win) == 0)
 		{
 			set_saved(TRUE, Winds);
@@ -493,7 +535,8 @@ int wacceptch(WINS *win, off_t len)
 	case KEY_F(5):
  		/* SeachStr stores the last searched string into the format *\
 	 	\* "(XXXXXXX...)" with 10 being the max chars shown         */
-                if (!fpINfilename || !strcmp(fpINfilename, "")) 
+FIND_LABEL:
+        if (!fpINfilename || !strcmp(fpINfilename, "")) 
 		{	 				/* output prompt      */
 		    wmove(win->hex_outline, LINES-1, 1);
                     wclrtoeol(win->hex_outline);
@@ -627,6 +670,7 @@ int wacceptch(WINS *win, off_t len)
 
 	case CTRL_AND('a'):
 	case KEY_F(6):					/* if F6, ^a, ^d...   */
+HEXADDR_LABEL:
 		printHex = (!printHex);			/* reverse printHex   */
 
 		getyx(Winds, row, col);			/* current location   */
@@ -655,6 +699,7 @@ int wacceptch(WINS *win, off_t len)
 
  	case CTRL_AND('g'):
 	case KEY_F(4):					/* if F4 or ^g...     */
+GOTO_LABEL:
 		wmove(win->hex_outline, LINES-1, 21);   /* output prompt      */
     		wclrtoeol(win->hex_outline);
     		mvwprintw(win->hex_outline, LINES - 1, 1, 
@@ -696,6 +741,7 @@ int wacceptch(WINS *win, off_t len)
 
 	case KEY_TAB:
 	case KEY_F(7):					/* if F7, TAB, ^i...  */
+HEXEDIT_LABEL:
 							/*switch the underline*/
 		getyx(Winds, row, col);			/* current location   */
 		wattrset((editHex) ? win->ascii : win->hex, A_NORMAL);
@@ -747,6 +793,7 @@ int wacceptch(WINS *win, off_t len)
 	case CTRL_AND('h'):
 	case CTRL_AND('p'):
 	case KEY_F(1):					/* if F1, ^?, ^h...   */
+HELP_LABEL:
 		getyx(Winds, row, col);			/* current location   */
 
 		printHelp(win);				/* display the help   */
