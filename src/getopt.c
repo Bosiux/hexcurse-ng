@@ -70,8 +70,7 @@ static int first_nonopt;
 static int last_nonopt;
 
 static void
-exchange (argv)
-     char **argv;
+exchange (char **argv)
 {
   int nonopts_size = (last_nonopt - first_nonopt) * sizeof (char *);
   char **temp = (char **) malloc(nonopts_size);
@@ -95,8 +94,7 @@ exchange (argv)
 /* Call this function with an argument of 1 to set the default option
    ordering to that required by Posix.  The normal default is PERMUTE. */
 void
-getopt_set_posix_option_order (on_or_off)
-     int on_or_off;
+getopt_set_posix_option_order (int on_or_off)
 {
   if (on_or_off == 1)
     default_ordering = REQUIRE_ORDER;
@@ -105,13 +103,7 @@ getopt_set_posix_option_order (on_or_off)
 }
 	
 int
-_getopt_internal (argc, argv, optstring, longopts, longind, long_only)
-     int argc;
-     char *const *argv;
-     const char *optstring;
-     const struct option *longopts;
-     int *longind;
-     int long_only;
+_getopt_internal (int argc,char *const *argv,const char *optstring,const struct option *longopts,int *longind,int long_only)
 {
   int option_index;
 
@@ -447,10 +439,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 }
 
 int
-hgetopt (argc, argv, optstring)
-     int argc;
-     char *const *argv;
-     const char *optstring;
+hgetopt (int argc,char *const *argv,const char *optstring)
 {
   return _getopt_internal (argc, argv, optstring,
 			   (const struct option *) 0,

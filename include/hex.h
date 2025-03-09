@@ -148,7 +148,7 @@ char *inputLine(WINDOW *win, int line, int col, bool allow_space);
 void outline(FILE *fp, off_t linenum);
 off_t maxLoc(FILE *fp);
 void set_saved(bool sav, WINDOW *win);
-void print_usage();
+void print_usage(void);
 off_t maxLines(off_t len);
 int openfile(WINS *win);
 int savefile(WINS *win);
@@ -171,7 +171,7 @@ hexList *insertItem(hexList *head, off_t loc, int val);
 int searchList(hexList *head, off_t loc);
 off_t countList(hexList *head, off_t loc);
 void updateBuf(hexList *head, char *buf, off_t pos1, off_t pos2);
-int writeChanges();
+int writeChanges(void);
 hexList *freeList(hexList *head);
 
 /* screen.c */
@@ -180,7 +180,7 @@ void free_windows(WINS *windows);
 void exit_err(char *err_str);
 void init_screen(void);
 void screen_exit(int exit_val);
-void init_fkeys();
+void init_fkeys(void);
 RETSIGTYPE checkScreenSize(int sig);
 void refreshall(WINS *win);
 WINDOW *drawbox(int y, int x, int height, int width);
