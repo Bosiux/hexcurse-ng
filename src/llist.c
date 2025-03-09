@@ -133,7 +133,7 @@ void updateBuf(hexList *head, char *buf, off_t pos1, off_t pos2)
  * Description: write the changes to either the current *
  *		file or to a specified output file	*
 \*******************************************************/
-int writeChanges()
+int writeChanges(void)
 {   
     FILE *fpOUT = NULL;
     FILE *fptmp = NULL;

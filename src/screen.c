@@ -144,7 +144,7 @@ void screen_exit(int exit_val)
 /******************************************************\
  * Description: Initialize function key menu interface*
 \******************************************************/ 
-void init_fkeys()
+void init_fkeys(void)
 {
     if (FNUMBERS)
     {
