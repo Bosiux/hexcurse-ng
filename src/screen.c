@@ -122,9 +122,12 @@ void init_screen(void)
     {
         perror("initscr");				/* print out error    */
         printf("exiting\n");
-	exit(EXIT_FAILURE);
+	    exit(EXIT_FAILURE);
     }
 
+    /* Enable mouse & keypad events */
+    mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL); 
+    keypad(stdscr, TRUE); 
 }
 
 /******************************************************\

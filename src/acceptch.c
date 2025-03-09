@@ -33,7 +33,8 @@ int SIZE_CH;                                            /* global winch flag  */
 int wacceptch(WINS *win, off_t len)
 {
     intmax_t tmp_max;
-    
+    MEVENT event;
+
     off_t count;
     int  col = 0, val, tmpval, 	    			/* counters, etc.     */   
          ch[81],					/* holds search string*/
@@ -90,6 +91,45 @@ int wacceptch(WINS *win, off_t len)
     while(!shouldExit)
     {
         key = wgetch(Winds);
+        if (key == KEY_MOUSE)
+        {
+            if (getmouse(&event) == OK)
+            {
+                int x = event.x;
+                if (event.bstate & BUTTON1_CLICKED)
+                {
+                    if (event.y == LINES){
+						int odd_add1 = COLS % 2;
+
+						if (x >= 0 && x <= 7)	/* Help label */
+						{
+							key = KEY_F(1);
+						} else if ( x <= 16 && x >= 9)	/* Save label */
+						{
+							key = KEY_F(2);
+						} else if ( x <= 25 && x >= 18)	/* Open label */
+						{
+							key = KEY_F(3);
+						} else if ( x <= (COLS/2) - 2 + odd_add1 && x >= (COLS/2) - 9 + odd_add1) /* Goto label */
+						{
+							key = KEY_F(4);
+						} else if ( x <= (COLS/2) + 7 + odd_add1 && x >= (COLS/2) + odd_add1) /* Find label */
+						{
+							key = KEY_F(5);
+						} else if ( x <= COLS - 19 && x >= COLS-26 ) /* Hex Addr label */
+						{
+							key =  KEY_F(6);
+						} else if ( x <= COLS-10 && x >= COLS-17 ) /* Hex Edit label */
+						{
+							key = KEY_F(7);
+						} else if ( x <= COLS-1 && x >= COLS-8 ) /* Quit label */
+						{
+							key = KEY_F(8);
+						}
+                    }
+                }
+            }
+        }
 	lastRow = row;
 	lastCol = col;
 	getyx(Winds, row, col);				/* curent cursor loc  */
@@ -493,7 +533,7 @@ int wacceptch(WINS *win, off_t len)
 	case KEY_F(5):
  		/* SeachStr stores the last searched string into the format *\
 	 	\* "(XXXXXXX...)" with 10 being the max chars shown         */
-                if (!fpINfilename || !strcmp(fpINfilename, "")) 
+        if (!fpINfilename || !strcmp(fpINfilename, "")) 
 		{	 				/* output prompt      */
 		    wmove(win->hex_outline, LINES-1, 1);
                     wclrtoeol(win->hex_outline);
