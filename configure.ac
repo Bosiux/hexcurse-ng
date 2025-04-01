@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT([hexcurse], [1.70.0])
+AC_INIT([hexcurse],[1.70.0])
 AC_CONFIG_SRCDIR(src/file.c)
 AM_INIT_AUTOMAKE([-Wall])
 
@@ -32,9 +32,21 @@ AC_SYS_LARGEFILE
 AC_FUNC_FSEEKO
 
 dnl Checks for library functions.
-AC_TYPE_SIGNAL
+AC_DIAGNOSE([obsolete],[your code may safely assume C89 semantics that RETSIGTYPE is void.
+Remove this warning and the `AC_CACHE_CHECK' when you adjust the code.])dnl
+AC_CACHE_CHECK([return type of signal handlers],[ac_cv_type_signal],[AC_COMPILE_IFELSE(
+[AC_LANG_PROGRAM([#include <sys/types.h>
+#include <signal.h>
+],
+		 [return *(signal (0, 0)) (0) == 1;])],
+		   [ac_cv_type_signal=int],
+		   [ac_cv_type_signal=void])])
+AC_DEFINE_UNQUOTED([RETSIGTYPE],[$ac_cv_type_signal],[Define as the return type of signal handlers
+		    (`int' or `void').])
+
 
 dnl Checks for BIG ENDIAN
 dnl AC_C_BIGENDIAN 
 
-AC_OUTPUT(Makefile src/Makefile man/Makefile)
+AC_CONFIG_FILES([Makefile src/Makefile man/Makefile])
+AC_OUTPUT
