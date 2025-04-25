@@ -19,7 +19,7 @@ maintained it for some time.
 
 It currently supports fast searching, hex and decimal address output,
 jumping to specified locations in the file, "undo" capabilities, "bolded"
-modifications, colors, EBCDIC mode, and quick keyboard shortcuts to
+modifications, colors, EBCDIC mode, and quick keyboard and mouse shortcuts to
 commands.
 
 
