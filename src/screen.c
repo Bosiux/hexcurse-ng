@@ -317,9 +317,10 @@ void printHelp(WINS *win)
     help = newwin(LINES - 2, hex_win_width, 1, 10),
     small = newwin(LINES - 2, ascii_win_width, 1, hex_outline_width + 2);
     
-    if ((LINES < 18) || (COLS < 78))			/* min size to display*/
+    if ((LINES < 20) || (COLS < 90))			/* min size to display*/
     {
 	mvwprintw(help, 0, 0, "Screen too small to display help");
+	mvwprintw(help, 1, 0, "you can read the manual page");
 	wmove(help,0,0);
     }
     else
@@ -349,8 +350,12 @@ void printHelp(WINS *win)
 	mvwprintw(small, 7, 1, "HexAdres = F6");
 	mvwprintw(small, 8, 1, "Hex Edit = F7");
 	mvwprintw(small, 9, 1, "Quit     = F8");
-	mvwprintw(small, 11, 1, "Page up  = PGUP");
-	mvwprintw(small, 12, 1, "Page down= PGDN");
+	mvwprintw(small, 11, 1, "F-labels clickable");
+	mvwprintw(small, 12, 1, "if mouse supported");
+	mvwprintw(small, 13, 1, "Shift+mouse button");
+	mvwprintw(small, 14, 1, "to copy/paste");
+	mvwprintw(small, 16, 1, "Page up   = PGUP");
+	mvwprintw(small, 17, 1, "Page down = PGDN");
 
 	mvwprintw(help, 0, 10, "HexCurse Keyboard Commands");
 	mvwprintw(help, 2, 2, "Help     - you are reading it now");
@@ -366,7 +371,7 @@ void printHelp(WINS *win)
 	mvwprintw(help, 13, 2, "Undo     - reverts last modification");
 	mvwprintw(help, 14, 2, "Home     - returns to the top of the file");
 	mvwprintw(help, 15, 2, "End      - jumps to the bottom of the file");
-	mvwprintw(help, 17, 12, "Press enter to continue");
+	mvwprintw(help, 17, 12, "Press any key to continue");
     }
 
     wnoutrefresh(ctrl);					/* refresh new wins   */
