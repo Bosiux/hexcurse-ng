@@ -379,6 +379,7 @@ void printHelp(WINS *win)
     wnoutrefresh(small);
     doupdate();						/* update screen      */
 
+    keypad(ctrl, TRUE);
     wgetch(ctrl);					/* wait for a char    */
 
     delwin(ctrl);					/* delete help wins   */

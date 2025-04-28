@@ -992,6 +992,8 @@ char *inputLine(WINDOW *win, int line, int col, bool allow_space)
 
     wmove(win, line, col);
 
+    mousemask(0, NULL);                          /* disable mouse temporarily */
+
     for (x = 0; (c = wgetch(win)) != 10; x++) 
     {
         wclrtoeol(win);					/* clear line         */
@@ -1005,6 +1007,7 @@ char *inputLine(WINDOW *win, int line, int col, bool allow_space)
 	else if (c == 27)				/* if the escape key  */
 	{   						/* is pressed, return */
 	    ch[0] = 27;					/* setting ch to 0xff */
+	    mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);  /* reenable mouse */
 	    return ch;					
 	}
 	else if (x == allocated)
@@ -1032,5 +1035,6 @@ char *inputLine(WINDOW *win, int line, int col, bool allow_space)
 
     ch[x] = '\0';					/* terminate          */
 
+    mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);   /* reenable mouse */
     return ch;
 }
